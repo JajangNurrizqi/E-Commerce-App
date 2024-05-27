@@ -20,6 +20,17 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
+		$this->load->model("FunctionModel");
+		$diskon = $this->FunctionModel->discount(10000, 10);
+		echo $diskon;
+		$totalArray = array(
+			"Barang 1" => 10000,
+			"Barang 2" => 20000,
+			"Barang 3" => 30000,
+			"Barang 4" => 40000
+		);
+		$total = $this->FunctionModel->total($totalArray);
+		echo "<br/>".$total;
 		$this->load->view('welcome_message');
 	}
 }
