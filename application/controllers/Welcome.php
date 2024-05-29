@@ -18,19 +18,42 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/userguide3/general/urls.html
 	 */
+
+	function __construct()
+	{
+        parent::__construct();
+		$this->load->helper('url');
+	}
 	public function index()
 	{
-		$this->load->model("FunctionModel");
-		$diskon = $this->FunctionModel->discount(10000, 10);
-		echo $diskon;
-		$totalArray = array(
-			"Barang 1" => 10000,
-			"Barang 2" => 20000,
-			"Barang 3" => 30000,
-			"Barang 4" => 40000
-		);
-		$total = $this->FunctionModel->total($totalArray);
-		echo "<br/>".$total;
+		$data['title'] = "Halaman testing";
+
+		$this->load->view("/templates/head", $data);
 		$this->load->view('welcome_message');
+		$this->load->view("/templates/foot");
+	}
+
+	public function listItems(){
+		$data['title'] = "Halaman testing";
+		//load database model
+		$this->load->model("ItemsModel");
+		//get all items views.
+		$data['listItemArray'] = $this->ItemsModel->getAllItems();
+
+		$this->load->view("/templates/head", $data);
+		$this->load->view('/pages/items/list', $data);
+		$this->load->view("/templates/foot");
+
+	}
+	public function edit($id){
+		$data['title'] = "Halaman testing";
+		$this->load->model("ItemsModel");
+		//get all items views.
+		$data['listItemArray'] = $this->ItemsModel->getItem($id);
+		
+		
+		$this->load->view("/templates/head", $data);
+		$this->load->view('/pages/items/edit', $data);
+		$this->load->view("/templates/foot");
 	}
 }

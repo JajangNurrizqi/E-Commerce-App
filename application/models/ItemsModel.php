@@ -10,14 +10,12 @@ class ItemsModel extends CI_Model{
     }
 
     function getItem($id){
-        $query = $this->db->query("SELECT");
-        $row = $query->rows();
+        $query = $this->db->where("id", $id)->get("item_details");
+        $row = $query->result();
     }
     function getAllItems(){
         // get all data from table
-        //$query = $this->db->get(tables, num);
-        $query = $this->db->query("SELECT");
-        $row = $query->rows();
+        return $this->db->get("item_details_view")->result();
     }
     function updateItems($id, $arrayUpdate){
         /* 
