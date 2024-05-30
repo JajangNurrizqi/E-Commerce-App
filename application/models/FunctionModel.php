@@ -14,5 +14,28 @@ class FunctionModel extends CI_Model{
 
         return $total;
     }
+    function create_acronym($words)
+    {
+        $words = explode(' ', $words);
+        $acronym = '';
 
+        foreach ($words as $word) {
+            $acronym .= $word[0];
+        }
+
+        $acronym = strtoupper($acronym);
+
+        return $acronym;
+    }    
+    function create_product_sku($name, $category, $price, $stock)
+    {
+        $name = create_acronym($name);
+        $category = create_acronym($category);
+        $price = create_acronym($price);
+        $stock = $stock;
+        $key = substr(time(), -3);
+
+        $sku =  $name . $category . $price . $stock . $key;
+        return $sku;
+    }
 }

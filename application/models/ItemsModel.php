@@ -3,48 +3,40 @@ class ItemsModel extends CI_Model{
 
     protected $tableName = "product_items";
 
-    function __construct(){
+    public function __construct()
+    {
         parent::__construct();
-        // load the database connection
-        $this->load->database();
     }
 
-    function getItem($id){
-        $query = $this->db->where("id", $id)->get("item_details");
-        $row = $query->result();
+    public function get_all_products()
+    {
+        return $this->db->get('item_details_view')->result();
     }
-    function getAllItems(){
-        // get all data from table
-        return $this->db->get("item_details_view")->result();
-    }
-    function updateItems($id, $arrayUpdate){
-        /* 
-            Example for array:
-                $array = array(
-                    'update' => $update
-                )
-            Then execute it.
 
-        */
-        $this->db->where("id", $id);
-        $this->db->update($tableName, $arrayUpdate);
+    public function is_product_exist($id, $produkId)
+    {
+        return ($this->db->where(array('id' => $id, 'product_id' => $produkId))->get('item_details')->num_rows() > 0) ? TRUE : FALSE;
     }
-    function deleteItem($id){
-        $this->db->delete("nama tabel", $id);
-    }
-    function createItem($id, $arrayItems){
-        /* 
-            Example for array:
-                $array = array(
-                    'update' => $update
-                )
-            Then execute it.
 
-        */
-        $this->db->where("id", $id);
-        $this->db->insert($tableName, $arrayItems);
+    public function product_data($id)
+    {
+        return $this->db->where("id", $id)->get('item_details_view')->row();
     }
-    function count($id){
 
+    public function related_products($current, $category)
+    {
+        return $this->db->where(array('id !=' => $current, 'category_id' => $category))->limit(4)->get('products')->result();
+    }
+
+    public function create_order(Array $data)
+    {
+        $this->db->insert('orders', $data);
+
+        return $this->db->insert_id();
+    }
+
+    public function create_order_items($data)
+    {
+        return $this->db->insert_batch('order_items', $data);
     }
 }
